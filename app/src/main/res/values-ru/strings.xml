@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Машина Поста</string>
+    <string name="menu_settings">Настройки</string>
+    <string name="menu_task">Условие задачи</string>
+    <string name="menu_help">Справка</string>
+    <string name="menu_about">О программе</string>
+    <string name="cancel">Отмена</string>
+    <string name="clean">Очистить</string>
+    <string name="command_text">Команда</string>
+    <string name="goto_text">Переход</string>
+    <string name="comment_text">Комментарий</string>
+    <string name="settings_speed">Скорость выполнения</string>
+    <string name="settings_alphabet">Алфавит</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="ok">Ок</string>
+    <string name="save_head">Сохранение</string>
+    <string name="save_confirm">Сохранить изменения?</string>
+    <string name="close_head">Предупреждение</string>
+    <string name="close_confirm">Несохраненные изменения будут утеряны. Продолжить?</string>
+    <string name="line_delete_head">Удаление</string>
+    <string name="line_delete_confirm">Вы действительно хотите удалить эту строку?</string>
+    <string name="about_desc">Программа-эмулятор «Машина Поста» для Android™ OS.</string>
+    <string name="about_version">Версия:</string>
+    <string name="exec_error_head">Ошибка выполнения</string>
+    <string name="exec_error_desc">Ошибка выполнения команды. Остановка машины.</string>
+    <string name="stop_head">Остановка выполнения</string>
+    <string name="stop_desc">Машина достигла конца программы.</string>
+    <string name="file_name">Введите имя файла:</string>
+    <string name="save_as">Сохранить как</string>
+    <string name="open_file_head">Открыть файл</string>
+    <string name="no_file">Нет файлов в</string>
+    <string name="save_file_succ">Сохранено успешно в</string>
+    <string name="access_error">Ошибка ввода/вывода</string>
+    <string name="opening_file">Подождите. Файл открывается…</string>
+    <string name="saving_file">Подождите. Файл сохраняется…</string>
+    <string name="steps_menu">По шагам со строки…</string>
+    <string name="steps">Выполнить со строки №</string>
+
+
+    <string-array name="pref_speed">
+        <item>Очень быстро</item>
+        <item>Быстро</item>
+        <item>Средне</item>
+        <item>Медленно</item>
+        <item>Очень медленно</item>
+    </string-array>
+
+    <string-array name="pref_alphabet">
+        <item>Двузначный</item>
+        <item>Трехзначный</item>
+    </string-array>
+
+    <string-array name="post_command">
+        <item>&gt; - вправо</item>
+        <item>&lt; - влево</item>
+        <item>0 - стереть метку</item>
+        <item>1 - поставить метку</item>
+        <item>\u003f - условный переход</item>
+        <item>. - стоп</item>
+        <item>Ничего</item>
+    </string-array>
+</resources>

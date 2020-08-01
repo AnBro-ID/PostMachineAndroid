@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<style type="text/css">
+h1 {font-size:1.2em; font-weight:bold; margin-bottom:1em; text-align:center;}
+h2 {font-size:1.1em; font-weight:bold; margin-bottom:1em; background: -webkit-linear-gradient(180deg, #ffffff, #e2e2e2);}
+p {font-weight:normal;}
+ul {list-style-type:none;}
+.command {font-weight:bold; color:blue;}
+.num {font-weight:bold;}
+</style>
+</head>
+<body>
+<h1>Post machine emulator</h1>
+<h2>Classic Post machine</h2>
+<p>The Post machine is an abstract computing machine based on the ideas of American mathematician E. L. Post. According to Post's thesis, any algorithm can be written as a program for the Post machine.</p>
+<p>The Post machine consists of a reading/writing pointer and an infinite tape divided into cells. Each tape cell can either be empty (0) or contain a label (1).</p>
+<p>Program for machine consists of numbered rows. Each row contains one of the following commands:</p>
+<ul>
+<li><span class="command">> </span><span class="num">N</span> - move pointer to the right by 1 cell and go to the row N;</li>
+<li><span class="command">< </span><span class="num">N</span> - move pointer to the left by 1 cell and go to the row N;</li>
+<li><span class="command">0 </span><span class="num">N</span> - write to the current cell "0" (erase label) and go to the row N;</li>
+<li><span class="command">1 </span><span class="num">N</span> - write to the current cell "1" (put label) and go to the row N;</li>
+<li><span class="command">? </span><span class="num">N, M</span> - if current cell contains "0", then go to the row N, otherwise go to the row M;</li>
+<li><span class="command">. </span> - stop program execution.</li>
+</ul>
+<p>You can omit the jump row number in the <span class="command">></span>, <span class="command"><</span>, <span class="command">0</span> and <span class="command">1</span> commands. In that case next row will be executed.</p>
+<h2>Triple Post machine</h2>
+<p>Triple Post machine uses an extended alphabet consisting of three characters: space, "0" and "1". This allows you to program tasks in which numbers are written in binary notation. Triple mode additional commands:</p>
+<ul>
+<li><span class="command">X </span><span class="num">N</span> - write a space to the current cell (erase label) and go to the row N;</li>
+<li><span class="command">0 </span><span class="num">N</span> - write to the current cell "0" and go to the row N;</li>
+<li><span class="command">1 </span><span class="num">N</span> - write to the current cell "1" and go to the row N.</li>
+</ul>
+<p>if...else command contains three comma-separated row's numbers:</p>
+<ul>
+<li><span class="command">? </span><span class="num">N, M, L</span> - if current cell is empty then go to row N, otherwise if current cell contains a "0" go to row M, otherwise go to row L.</li>
+</ul>
+<h2>How to work with app?</h2>
+<p>In action bar menu there is an item "Task description", it contains editor field where you can enter task description in a free form.</p>
+<p>Tape moves to the left/right using gestures (swipes). You can quickly go to the first encountered cell with "0" or "1" located outside the screen using special control buttons. By clicking on a tape cell, you can change its contents (in the "classic" version, "0" will be replaced by "1" or vice versa, in the triple version, characters "space", "0" and "1" will be changed cyclically).</p>
+<p>You can save the state of tape in the internal buffer and load it back.</p>
+<p>Settings allow you to change machine mode (binary or triple alphabet), as well as to choose the speed of execution.</p>
+<p>First column in program table contains row numbers and it is filled automatically. In the second column you can select the desired command from the list, and in the third you can enter row number to jump to (if it's necessary).</p>
+<p>Fourth column can contain a comment for selected row. You can add and delete table rows, but first you need to select row by clicking on it's number.</p>
+<p>Executing row has a green background.</p>
+<p>It is possible to run program in step-by-step mode, specifying start row.</p>
+<p>Programs for Post machine can be saved in files. When you load a file and save it, the initial state of tape is automatically written to the buffer. To open "Save as" dialog box you need to hold button with the floppy disk icon.</p>
+<h2>Possible errors in execution of commands</h2>
+<ul>
+<li><span class="command"> > </span> - impossible to move pointer if it is placed on the rightmost position;</li>
+<li><span class="command"> < </span> - impossible to move pointer if it is placed on the leftmost position;</li>
+<li><span class="command"> X </span> - cannot erase the label if it has already been erased;</li>
+<li><span class="command"> 0 </span> - cannot write to cell "0" if it already contains "0";</li>
+<li><span class="command"> 1 </span> - cannot write to cell "1" if it already contains "1".</li>
+</ul>
+<p>Also, for the above commands and command<span class="command"> ? </span>you cannot jump to the nonexistent row.</p>
+</body>
+</html>

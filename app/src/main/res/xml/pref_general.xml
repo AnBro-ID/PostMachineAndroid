@@ -1,0 +1,23 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ru.anbroid.postmachine.ListPreferenceCompat
+        android:defaultValue="500"
+        android:entries="@array/pref_speed"
+        android:entryValues="@array/pref_speed_values"
+        android:key="speed_list"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:summary="%s"
+        android:title="@string/settings_speed" />
+
+    <!--<ru.anbroid.postmachine.ListPreferenceCompat
+        android:defaultValue="0"
+        android:entries="@array/pref_alphabet"
+        android:entryValues="@array/pref_alphabet_values"
+        android:key="alphabet_list"
+        android:summary="%s"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/settings_alphabet" />-->
+
+</PreferenceScreen>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="menu_settings" type="id">@null</item>
+    <item name="menu_task" type="id">@null</item>
+    <item name="menu_steps" type="id">@null</item>
+    <item name="menu_help" type="id">@null</item>
+    <item name="menu_about" type="id">@null</item>
+</resources>

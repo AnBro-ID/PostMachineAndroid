@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/Count"
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:background="@drawable/back1"
+        android:focusable="false"
+        android:gravity="center_vertical|center_horizontal"
+        android:textAlignment="center"
+        android:textColor="@android:color/black" />
+
+    <EditText
+        android:id="@+id/Command"
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5"
+        android:background="@drawable/bottom_right"
+        android:ems="10"
+        android:focusable="false"
+        android:gravity="center_vertical|center_horizontal"
+        android:inputType="textShortMessage"
+        android:longClickable="false"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:textColor="@android:color/black" />
+
+    <EditText
+        android:id="@+id/Goto"
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/bottom_right"
+        android:ems="10"
+        android:focusable="false"
+        android:gravity="center_vertical|center_horizontal"
+        android:inputType="textShortMessage"
+        android:longClickable="false"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:textColor="@android:color/black" />
+
+    <EditText
+        android:id="@+id/Comment"
+        android:layout_width="0px"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/bottom_right"
+        android:ems="10"
+        android:focusable="false"
+        android:gravity="start|center_vertical"
+        android:inputType="textShortMessage"
+        android:longClickable="false"
+        android:singleLine="true"
+        android:textColor="@android:color/black" />
+</LinearLayout>

@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="ru.anbroid.postmachine.MainActivity"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/Ribbon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ribbon_borders"
+                android:clipToPadding="false"
+                android:overScrollMode="never" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ribbon_pointer" />
+
+        </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@drawable/back1"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/left_until_btn"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="false"
+            android:background="@drawable/button_background_selector"
+            android:scaleType="fitCenter"
+            android:src="@drawable/left_until"
+            app:srcCompat="@drawable/left_until" />
+
+        <ImageButton
+            android:id="@+id/play_btn"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="false"
+            android:background="@drawable/button_background_selector"
+            android:scaleType="fitCenter"
+            android:src="@drawable/play"
+            app:srcCompat="@drawable/play" />
+
+        <ImageButton
+            android:id="@+id/stop_btn"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="false"
+            android:background="@drawable/button_background_selector"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/stop" />
+
+        <ImageButton
+            android:id="@+id/right_until_btn"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:adjustViewBounds="false"
+            android:background="@drawable/button_background_selector"
+            android:scaleType="fitCenter"
+            android:src="@drawable/right_until"
+            app:srcCompat="@drawable/right_until" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="0.92"
+            android:background="@drawable/back3"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/back1"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:maxLines="1"
+                    android:text="@string/command_text"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/back1"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:maxLines="1"
+                    android:text="@string/goto_text"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:layout_width="0px"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/back1"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:maxLines="1"
+                    android:text="@string/comment_text"
+                    android:textAlignment="center"
+                    android:textColor="@color/text_color"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lvMain"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@null"
+                android:dividerHeight="0dp">
+
+            </ListView>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="0.08"
+            android:background="@drawable/back1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/add_line_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/button_background_selector"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/add_up_line" />
+
+                <ImageButton
+                    android:id="@+id/add_line_down"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/button_background_selector"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/add_line" />
+
+                <ImageButton
+                    android:id="@+id/delete_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/button_background_selector"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/delete_line" />
+
+                <ImageButton
+                    android:id="@+id/backup_ribbon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/button_background_selector"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/backup_ribbon" />
+
+                <ImageButton
+                    android:id="@+id/restore_ribbon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/button_background_selector"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/restore_ribbon" />
+
+                <ImageButton
+                    android:id="@+id/create_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/button_background_selector"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/create" />
+
+                <ImageButton
+                    android:id="@+id/open_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/button_background_selector"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/open" />
+
+                <ImageButton
+                    android:id="@+id/save_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/button_background_selector"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/save" />
+
+                <ImageButton
+                    android:id="@+id/step_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/button_background_selector"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/step" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    </LinearLayout>

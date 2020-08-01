@@ -1,0 +1,12 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat">
+    </style>
+
+    <style name="NumberPickerText">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="NoActBarTheme" parent="Theme.AppCompat.NoActionBar" />
+
+</resources>
