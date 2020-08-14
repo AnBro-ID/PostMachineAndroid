@@ -1,12 +1,17 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat">
+        <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:splitMotionEvents">false</item>
     </style>
 
     <style name="NumberPickerText">
         <item name="android:textSize">22sp</item>
     </style>
 
-    <style name="NoActBarTheme" parent="Theme.AppCompat.NoActionBar" />
+    <style name="NoActBarTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:splitMotionEvents">false</item>
+    </style>
 
 </resources>

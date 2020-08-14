@@ -10,7 +10,7 @@
         android:summary="%s"
         android:title="@string/settings_speed" />
 
-    <!--<ru.anbroid.postmachine.ListPreferenceCompat
+    <ru.anbroid.postmachine.ListPreferenceCompat
         android:defaultValue="0"
         android:entries="@array/pref_alphabet"
         android:entryValues="@array/pref_alphabet_values"
@@ -18,6 +18,6 @@
         android:summary="%s"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="@string/settings_alphabet" />-->
+        android:title="@string/settings_alphabet" />
 
 </PreferenceScreen>

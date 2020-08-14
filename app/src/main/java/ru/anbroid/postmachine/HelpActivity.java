@@ -17,12 +17,11 @@ import java.util.Locale;
 
 public class HelpActivity extends AppCompatActivity
 {
-    private WebView webView;
-
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        WebView webView;
         setContentView(R.layout.activity_help);
 
         Toolbar toolbar = findViewById(R.id.toolbar_help);

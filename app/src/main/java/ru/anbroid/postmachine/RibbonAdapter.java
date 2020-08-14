@@ -9,20 +9,39 @@ import android.widget.TextView;
 
 public class RibbonAdapter extends RecyclerView.Adapter<RibbonAdapter.ViewHolder> implements RibbonLayoutManager.onItemSelectedListener
 {
-    private int mSelected;
-    private int mSaved;
-    private char[] mRibbon;
-    private char[] mRibbonBackup;
-    private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
+    protected int mSelected;
+    protected int mSaved;
+    protected char[] mRibbon;
+    protected char[] mRibbonBackup;
+    protected LayoutInflater mInflater;
+    protected ItemClickListener mClickListener;
 
-    RibbonAdapter(Context context)
+    public RibbonAdapter(Context context)
     {
         this.mInflater = LayoutInflater.from(context);
         mRibbon = new char[100];
         mSelected = 49;
 
         for (int i = 0; i < mRibbon.length; ++i) mRibbon[i] = '0';
+    }
+
+    public RibbonAdapter(RibbonAdapterTriple rb)
+    {
+        mInflater = rb.mInflater;
+        mRibbon = rb.mRibbon;
+        mRibbonBackup = rb.mRibbonBackup;
+        mSelected = rb.mSelected;
+        mSaved = rb.mSaved;
+        mClickListener = rb.mClickListener;
+
+        for (int i = 0; i < mRibbon.length; ++i)
+        {
+            if (mRibbon[i] == ' ')
+                mRibbon[i] = '0';
+
+            if (mRibbonBackup[i] == ' ')
+                mRibbonBackup[i] = '0';
+        }
     }
 
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
@@ -35,6 +54,7 @@ public class RibbonAdapter extends RecyclerView.Adapter<RibbonAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, int position)
     {
         holder.myTextView.setText(String.valueOf(mRibbon[position]));
+        holder.num.setText(String.valueOf(position - 49));
     }
 
     @Override
@@ -46,11 +66,13 @@ public class RibbonAdapter extends RecyclerView.Adapter<RibbonAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         TextView myTextView;
+        TextView num;
 
         ViewHolder(View itemView)
         {
             super(itemView);
             myTextView = itemView.findViewById(R.id.RibbonItem);
+            num = itemView.findViewById(R.id.num);
             itemView.setOnClickListener(this);
         }
 

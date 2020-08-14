@@ -61,4 +61,16 @@
         <item>. - стоп</item>
         <item>Ничего</item>
     </string-array>
+
+    <string-array name="triple_post_command">
+        <item>&gt; - вправо</item>
+        <item>&lt; - влево</item>
+        <item>0 - записать 0</item>
+        <item>1 - записать 1</item>
+        <item>X - стереть метку</item>
+        <item>\u003f - условный переход</item>
+        <item>. - стоп</item>
+        <item>Ничего</item>
+    </string-array>
+
 </resources>

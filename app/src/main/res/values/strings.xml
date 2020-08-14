@@ -56,8 +56,20 @@
         <item>&lt; - to left</item>
         <item>0 - remove sign</item>
         <item>1 - add sign</item>
-        <item>\u003f - go to if</item>
+        <item>\u003f - condition jump</item>
         <item>. - stop</item>
         <item>Nothing</item>
     </string-array>
+
+    <string-array name="triple_post_command">
+        <item>&gt; - to right</item>
+        <item>&lt; - to left</item>
+        <item>0 - set 0</item>
+        <item>1 - set 1</item>
+        <item>X - remove sign</item>
+        <item>\u003f - condition jump</item>
+        <item>. - stop</item>
+        <item>Nothing</item>
+    </string-array>
+
 </resources>

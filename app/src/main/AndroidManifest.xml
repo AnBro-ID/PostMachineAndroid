@@ -8,24 +8,30 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="false"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:resizeableActivity="false"
+        android:supportsPictureInPicture="false">
 
-        <activity android:name="ru.anbroid.postmachine.MainActivity">
+        <activity android:resizeableActivity="false"
+            android:supportsPictureInPicture="false" android:name="ru.anbroid.postmachine.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name="ru.anbroid.postmachine.HelpActivity"
+        <activity android:resizeableActivity="false"
+            android:supportsPictureInPicture="false" android:name="ru.anbroid.postmachine.HelpActivity"
             android:theme="@style/NoActBarTheme">
         </activity>
 
-        <activity android:name="ru.anbroid.postmachine.TaskActivity"
+        <activity android:resizeableActivity="false"
+            android:supportsPictureInPicture="false" android:name="ru.anbroid.postmachine.TaskActivity"
             android:theme="@style/NoActBarTheme">
         </activity>
 
-        <activity android:name="ru.anbroid.postmachine.PrefActivity"
+        <activity android:resizeableActivity="false"
+            android:supportsPictureInPicture="false" android:name="ru.anbroid.postmachine.PrefActivity"
             android:theme="@style/NoActBarTheme">
         </activity>
 

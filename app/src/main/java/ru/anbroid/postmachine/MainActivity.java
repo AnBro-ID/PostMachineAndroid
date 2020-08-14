@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isPlay;                 // флаг состояния МП - работает
     private boolean isPaused;               // флаг состояния МП - приостановлена
     private boolean isPlayBySteps;
+    private boolean isTriple;
     private int speed;                      // скорость выполнения
 
     private String Task;                    // условие задачи
@@ -318,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                                 try
                                 {
-                                    numLine = Integer.valueOf(lineNumber.getText().toString());
+                                    numLine = Integer.parseInt(lineNumber.getText().toString());
                                 }
                                 catch (NumberFormatException e)
                                 {
@@ -505,7 +506,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         super.onResume();
 
-        speed = Integer.valueOf(sp.getString("speed_list", "500"));
+        speed = Integer.parseInt(sp.getString("speed_list", "500"));
     }
 
     @Override
@@ -803,18 +804,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void openFile()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        View view = getLayoutInflater().inflate(R.layout.progress_indicator, null);
-        TextView textView = view.findViewById(R.id.progressTitle);
-
-        textView.setText(getString(R.string.opening_file));
-        builder.setView(view);
-        builder.setCancelable(false);
-
-        final AlertDialog alert = builder.create();
-        alert.show();
-
         new Thread()
         {
             public void run()
@@ -866,6 +855,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             catch (IOException e)
                             {
                                 Toast.makeText(MainActivity.this, R.string.access_error, Toast.LENGTH_LONG).show();
+                                rAdapter.resetAdapter();
+                                recyclerView.scrollToPosition(rAdapter.getSelectedPosition());
+
+                                Task = null;
+                                ChosenFile = null;
+
+                                pAdapter.pc.clear();
+                                pAdapter.pc.add(new PostCode());
+                                pAdapter.pc.trimToSize();
+
+                                pAdapter.resetAdapter();
+                                pAdapter.notifyDataSetChanged();
                             }
                             finally
                             {
@@ -881,6 +882,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                     catch (IOException logOrIgnore)
                                     {
                                         Toast.makeText(MainActivity.this, R.string.access_error, Toast.LENGTH_LONG).show();
+                                        rAdapter.resetAdapter();
+                                        recyclerView.scrollToPosition(rAdapter.getSelectedPosition());
+
+                                        Task = null;
+                                        ChosenFile = null;
+
+                                        pAdapter.pc.clear();
+                                        pAdapter.pc.add(new PostCode());
+                                        pAdapter.pc.trimToSize();
+
+                                        pAdapter.resetAdapter();
+                                        pAdapter.notifyDataSetChanged();
                                     }
                             }
                         }
@@ -890,8 +903,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {
                     e.printStackTrace();
                 }
-
-                alert.dismiss();
             }
         }.start();
     }
@@ -956,8 +967,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                                 char[] ribbon = rAdapter.getRibbon();
 
-                                for (int i = 0; i < ribbon.length; ++i)
-                                    dos.writeChar(ribbon[i]);
+                                for (char c : ribbon) dos.writeChar(c);
                             }
                             catch (IOException e)
                             {

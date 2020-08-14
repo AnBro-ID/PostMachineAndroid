@@ -3,14 +3,14 @@ package ru.anbroid.postmachine;
 import java.io.Serializable;
 
 /**
- * @author AnBro-ID, 2018
+ * @author AnBro-ID, 2018, 2020
  * Класс, описывающий строку программы для машины Поста
  */
 
 public class PostCode implements Serializable
 {
     public char command;        // команда МП
-    private String go_to;       // строка переходов
+    protected String go_to;     // строка переходов
     public String comment;      // комментарий к строке программы МП
 
     /**
@@ -48,6 +48,22 @@ public class PostCode implements Serializable
         comment = "";
     }
 
+    public PostCode(PostCodeTriple pst)
+    {
+        command = pst.command;
+        go_to = pst.go_to;
+        comment = pst.comment;
+
+        if (command == 'X')
+            command = '0';
+
+        if (isGotoConcatenated())
+        {
+            int[] nums = pst.getConcatGotoByInt();
+            setConcatGotoByInt(nums[0], nums[1]);
+        }
+    }
+
     /**
      * Метод, определяющий наличие текста в строке программы МП
      * @return true, если строка не пуста и false в противном случае
@@ -83,11 +99,22 @@ public class PostCode implements Serializable
 
     public int[] getConcatGotoByInt()
     {
-        int num[] = new int[2];
-        String split[] = go_to.split(",");
+        int[] num = new int[2];
+        String[] split = go_to.split(",");
 
-        num[0] = Integer.valueOf(split[0]);
-        num[1] = Integer.valueOf(split[1]);
+        try
+        {
+            num[0] = Integer.parseInt(split[0]);
+            num[1] = Integer.parseInt(split[1]);
+        }
+        catch (NumberFormatException e)
+        {
+            num[0] = num[1] = 1;
+        }
+        catch (ArrayIndexOutOfBoundsException e)
+        {
+            num[1] = num[0];
+        }
 
         return num;
     }
@@ -97,7 +124,17 @@ public class PostCode implements Serializable
      * @return порядковый номер строки
      */
 
-    public int getGotoByInt() { return Integer.valueOf(go_to); }
+    public int getGotoByInt()
+    {
+        try
+        {
+            return Integer.parseInt(go_to);
+        }
+        catch (NumberFormatException e)
+        {
+            return 1;
+        }
+    }
 
     public String getGoto() { return go_to; }
 
