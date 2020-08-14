@@ -2,60 +2,28 @@ package ru.anbroid.postmachine;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import androidx.appcompat.app.AlertDialog;
-import android.widget.ArrayAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.NumberPicker;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
 
-/**
- * @author AnBro-ID, 2018
- * Модифицированный адаптер для списка строк программы МП
- */
-
-public class PostAdapter extends ArrayAdapter<PostCode>
+class TriplePostAdapter extends PostAdapter
 {
-    public ArrayList<PostCode> pc;   // списочный массив строк программы МП
+    public ArrayList<PostCodeTriple> pc;
 
-    public int current_line;                // номер выбранной строки
-    public int exec_line;                   // номер выполняемой строки
-    public boolean isSelected;              // флаг состояния строки
-
-    /**
-     * Класс, реализующий шаблон проектирования Singleton
-     */
-
-    static class ViewHolder
+    public TriplePostAdapter(Context context)
     {
-        public TextView Count;      // компонент для вывода порядкового номера строки
-        public EditText Command;    // компонент для ввода команды
-        public EditText Goto;       // компонент для ввода перехода
-        public EditText Comment;    // компонент для ввода комментария
+        super(context);
+        pc = new ArrayList<PostCodeTriple>(1);
+        pc.add(new PostCodeTriple());
     }
 
-    /**
-     * Конструктор класса
-     * @param context - активность приложения
-     */
-
-    public PostAdapter(Context context)
-    {
-        super(context, R.layout.command_list);
-
-        pc = new ArrayList<>(1);
-        pc.add(new PostCode());
-
-        current_line = -1;
-        exec_line = -1;
-        isSelected = false;
-    }
-
-    public PostAdapter(Context context, TriplePostAdapter postAdapter)
+    public TriplePostAdapter(Context context, PostAdapter postAdapter)
     {
         this(context);
 
@@ -66,7 +34,7 @@ public class PostAdapter extends ArrayAdapter<PostCode>
 
         for (int i = 0; i < postAdapter.getCount(); ++i)
         {
-            pc.add(new PostCode(postAdapter.pc.get(i)));
+            pc.add(new PostCodeTriple(postAdapter.pc.get(i)));
         }
     }
 
@@ -157,14 +125,17 @@ public class PostAdapter extends ArrayAdapter<PostCode>
 
                             if (pc.get(pos).command == '?')
                             {
-                                view = LayoutInflater.from(getContext()).inflate(R.layout.goto_dialog_adv, null);
+                                view = LayoutInflater.from(getContext()).inflate(R.layout.goto_dialog_adv_triple, null);
                                 final NumberPicker numpick1 = view.findViewById(R.id.numberPicker1);
                                 final NumberPicker numpick2 = view.findViewById(R.id.numberPicker2);
+                                final NumberPicker numpick3 = view.findViewById(R.id.numberPicker3);
 
                                 numpick1.setMaxValue(pc.size());
                                 numpick1.setMinValue(1);
                                 numpick2.setMaxValue(pc.size());
                                 numpick2.setMinValue(1);
+                                numpick3.setMaxValue(pc.size());
+                                numpick3.setMinValue(1);
 
                                 if (!pc.get(pos).isGotoEmpty())
                                 {
@@ -172,6 +143,7 @@ public class PostAdapter extends ArrayAdapter<PostCode>
 
                                     numpick1.setValue(pc.get(pos).getConcatGotoByInt()[0]);
                                     numpick2.setValue(pc.get(pos).getConcatGotoByInt()[1]);
+                                    numpick3.setValue(pc.get(pos).getConcatGotoByInt()[2]);
                                 }
 
                                 builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener()
@@ -179,7 +151,7 @@ public class PostAdapter extends ArrayAdapter<PostCode>
                                     @Override
                                     public void onClick(DialogInterface dialog, int which)
                                     {
-                                        pc.get(pos).setConcatGotoByInt(numpick1.getValue(), numpick2.getValue());
+                                        pc.get(pos).setConcatGotoByInt(numpick1.getValue(), numpick2.getValue(), numpick3.getValue());
                                         notifyDataSetChanged();
                                     }
                                 });
@@ -295,22 +267,5 @@ public class PostAdapter extends ArrayAdapter<PostCode>
         holder.Comment.setTag(position);
 
         return rowView;
-    }
-
-    /**
-     * Метод, сбрасывающий значения полей класса
-     */
-
-    public void resetAdapter()
-    {
-        current_line = -1;
-        exec_line = -1;
-        isSelected = false;
-    }
-
-    @Override
-    public int getCount()
-    {
-        return pc.size();
     }
 }

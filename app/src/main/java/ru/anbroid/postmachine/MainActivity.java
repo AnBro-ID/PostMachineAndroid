@@ -3,6 +3,7 @@ package ru.anbroid.postmachine;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -42,12 +43,13 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, RibbonAdapter.ItemClickListener
 {
-    private PostAdapter pAdapter;           // адаптер для списка
+    protected PostAdapter pAdapter;         // адаптер для списка
 
     private SharedPreferences sp;           // объект для доступа к настройкам
+    private SharedPreferences.OnSharedPreferenceChangeListener settingListener;
 
-    private RecyclerView recyclerView;      // лента МП
-    private RibbonAdapter rAdapter;
+    protected RecyclerView recyclerView;    // лента МП
+    protected RibbonAdapter rAdapter;
 
     private boolean isPlay;                 // флаг состояния МП - работает
     private boolean isPaused;               // флаг состояния МП - приостановлена
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private boolean isTriple;
     private int speed;                      // скорость выполнения
 
-    private String Task;                    // условие задачи
+    protected String Task;                    // условие задачи
     private String ChosenFile;              // открытый файл
 
     private Handler handler;                // обработчик сообщений
@@ -77,7 +79,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isPlay = false;
         isPaused = false;
         isPlayBySteps = false;
-        sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp = this.getSharedPreferences("My_Shared_Preference_Name", MODE_PRIVATE);
+        settingListener = new SharedPreferences.OnSharedPreferenceChangeListener()
+        {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s)
+            {
+                Toast.makeText(getApplicationContext(), "changed: " + s, Toast.LENGTH_LONG).show();
+            }
+        };
+
+        sp.registerOnSharedPreferenceChangeListener(settingListener);
 
         pAdapter = new PostAdapter(this);
         ListView lvMain = findViewById(R.id.lvMain);
@@ -127,132 +139,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         playBtn = findViewById(R.id.play_btn);
         playBtn.setOnClickListener(this);
 
-        handler = new Handler()
-        {
-            @Override
-            public void handleMessage(android.os.Message msg)
-            {
-                if (pAdapter.exec_line < pAdapter.pc.size())
-                {
-                    switch (pAdapter.pc.get(pAdapter.exec_line).command)
-                    {
-                        case '>':
-
-                            if (rAdapter.getSelectedPosition() == rAdapter.getRibbon().length - 1)
-                            {
-                                stop();
-                                showError();
-                            }
-                            else
-                            {
-                                recyclerView.scrollToPosition(rAdapter.getSelectedPosition() + 1);
-                                rAdapter.setSelectedPosition(rAdapter.getSelectedPosition() + 1);
-
-                                if (pAdapter.pc.get(pAdapter.exec_line).isGotoEmpty()) pAdapter.exec_line++;
-                                else pAdapter.exec_line = pAdapter.pc.get(pAdapter.exec_line).getGotoByInt() - 1;
-
-                                pAdapter.notifyDataSetChanged();
-                            }
-
-                            break;
-
-                        case '<':
-
-                            if (rAdapter.getSelectedPosition() == 0)
-                            {
-                                stop();
-                                showError();
-                            }
-                            else
-                            {
-                                recyclerView.scrollToPosition(rAdapter.getSelectedPosition() - 1);
-                                rAdapter.setSelectedPosition(rAdapter.getSelectedPosition() - 1);
-
-                                if (pAdapter.pc.get(pAdapter.exec_line).isGotoEmpty()) pAdapter.exec_line++;
-                                else pAdapter.exec_line = pAdapter.pc.get(pAdapter.exec_line).getGotoByInt() - 1;
-
-                                pAdapter.notifyDataSetChanged();
-                            }
-
-                            break;
-
-                        case '0':
-
-                            if (rAdapter.getItem(rAdapter.getSelectedPosition()) == '0')
-                            {
-                                stop();
-                                showError();
-                            }
-                            else
-                            {
-                                rAdapter.setItem(rAdapter.getSelectedPosition(), '0');
-
-                                if (pAdapter.pc.get(pAdapter.exec_line).isGotoEmpty()) pAdapter.exec_line++;
-                                else pAdapter.exec_line = pAdapter.pc.get(pAdapter.exec_line).getGotoByInt() - 1;
-
-                                pAdapter.notifyDataSetChanged();
-                            }
-
-                            break;
-
-                        case '1':
-
-                            if (rAdapter.getItem(rAdapter.getSelectedPosition()) == '1')
-                            {
-                                stop();
-                                showError();
-                            }
-                            else
-                            {
-                                rAdapter.setItem(rAdapter.getSelectedPosition(), '1');
-
-                                if (pAdapter.pc.get(pAdapter.exec_line).isGotoEmpty()) pAdapter.exec_line++;
-                                else pAdapter.exec_line = pAdapter.pc.get(pAdapter.exec_line).getGotoByInt() - 1;
-
-                                pAdapter.notifyDataSetChanged();
-                            }
-
-                            break;
-
-                        case '?':
-
-                            if (pAdapter.pc.get(pAdapter.exec_line).isGotoEmpty())
-                            {
-                                stop();
-                                showError();
-                            }
-                            else
-                            {
-                                if (rAdapter.getItem(rAdapter.getSelectedPosition()) == '0')
-                                    pAdapter.exec_line = pAdapter.pc.get(pAdapter.exec_line).getConcatGotoByInt()[0] - 1;
-                                else
-                                    pAdapter.exec_line = pAdapter.pc.get(pAdapter.exec_line).getConcatGotoByInt()[1] - 1;
-
-                                pAdapter.notifyDataSetChanged();
-                            }
-
-                            break;
-
-                        case '.':
-
-                            stop();
-                            showStopMessage();
-
-                            break;
-
-                        default:
-
-                            stop();
-                            showError();
-                    }
-                }
-                else
-                {
-                    stop();
-                    showError();
-                }
-            }
-        };
+        handler = new BinaryHandler(this);
     }
 
     @Override
@@ -505,15 +392,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume()
     {
         super.onResume();
-
+        sp.registerOnSharedPreferenceChangeListener(settingListener);
         speed = Integer.parseInt(sp.getString("speed_list", "500"));
+        isTriple = Boolean.parseBoolean(sp.getString("alphabet_list", "0"));
     }
 
     @Override
     protected void onPause()
     {
         super.onPause();
-
+        sp.unregisterOnSharedPreferenceChangeListener(settingListener);
         if (isPlay) pause();
     }
 
@@ -582,7 +470,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Метод, останавливающий выполнение программы МП
      */
 
-    private void stop()
+    protected void stop()
     {
         if (thread != null)
         {
@@ -607,7 +495,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Метод, приостанавливающий выполнение программы МП
      */
 
-    private void pause()
+    protected void pause()
     {
         playBtn.setImageResource(R.drawable.play);
 
@@ -622,7 +510,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Метод показа ошибки выполнения
      */
 
-    private void showError()
+    protected void showError()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -642,7 +530,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Метод показа сообщения об остановке выполнения
      */
 
-    private void showStopMessage()
+    protected void showStopMessage()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -785,7 +673,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             if (!filename.isEmpty())
                             {
                                 ChosenFile = filename + ".pme";
-                                saveFile(ChosenFile);
+                                new SaveFile(MainActivity.this, ChosenFile).execute();
                                 dialog.dismiss();
                             }
                         }
@@ -795,7 +683,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             alert.show();
         }
-        else saveFile(ChosenFile);
+        else new SaveFile(MainActivity.this, ChosenFile).execute();
     }
 
     /**
@@ -914,17 +802,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void saveFile(final String filename)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        View view = getLayoutInflater().inflate(R.layout.progress_indicator, null);
-        TextView textView = view.findViewById(R.id.progressTitle);
-
-        textView.setText(getString(R.string.saving_file));
-        builder.setView(view);
-        builder.setCancelable(false);
-
-        final AlertDialog alert = builder.create();
-        alert.show();
 
         new Thread()
         {
@@ -994,8 +871,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 {
                     e.printStackTrace();
                 }
-
-                alert.dismiss();
             }
         }.start();
     }
@@ -1113,5 +988,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onMultiWindowModeChanged(boolean isInMultiWindowMode, Configuration newConfig) {
         super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig);
+    }
+
+    protected void lockScreenOrientation()
+    {
+        int currentOrientation = getResources().getConfiguration().orientation;
+        if (currentOrientation == Configuration.ORIENTATION_PORTRAIT)
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+        else
+        {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
+    }
+
+    protected void unlockScreenOrientation()
+    {
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
     }
 }
