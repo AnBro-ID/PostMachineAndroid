@@ -19,12 +19,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 
@@ -45,19 +42,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 {
     protected PostAdapter pAdapter;         // адаптер для списка
 
-    private SharedPreferences sp;           // объект для доступа к настройкам
-    private SharedPreferences.OnSharedPreferenceChangeListener settingListener;
-
     protected RecyclerView recyclerView;    // лента МП
     protected RibbonAdapter rAdapter;
 
     private boolean isPlay;                 // флаг состояния МП - работает
     private boolean isPaused;               // флаг состояния МП - приостановлена
     private boolean isPlayBySteps;
-    private boolean isTriple;
-    private int speed;                      // скорость выполнения
+    protected static boolean isTriple;
+    protected static int speed;             // скорость выполнения
 
-    protected String Task;                    // условие задачи
+    protected String Task;                  // условие задачи
     private String ChosenFile;              // открытый файл
 
     private Handler handler;                // обработчик сообщений
@@ -79,17 +73,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isPlay = false;
         isPaused = false;
         isPlayBySteps = false;
-        sp = this.getSharedPreferences("My_Shared_Preference_Name", MODE_PRIVATE);
-        settingListener = new SharedPreferences.OnSharedPreferenceChangeListener()
-        {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s)
-            {
-                Toast.makeText(getApplicationContext(), "changed: " + s, Toast.LENGTH_LONG).show();
-            }
-        };
-
-        sp.registerOnSharedPreferenceChangeListener(settingListener);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        speed = Integer.parseInt(sp.getString("speed_list", "500"));
+        isTriple = Boolean.parseBoolean(sp.getString("alphabet_list", "0"));
 
         pAdapter = new PostAdapter(this);
         ListView lvMain = findViewById(R.id.lvMain);
@@ -392,16 +378,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume()
     {
         super.onResume();
-        sp.registerOnSharedPreferenceChangeListener(settingListener);
-        speed = Integer.parseInt(sp.getString("speed_list", "500"));
-        isTriple = Boolean.parseBoolean(sp.getString("alphabet_list", "0"));
     }
 
     @Override
     protected void onPause()
     {
         super.onPause();
-        sp.unregisterOnSharedPreferenceChangeListener(settingListener);
         if (isPlay) pause();
     }
 
@@ -796,86 +778,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     * Метод сохранения файла
-     * @param filename - имя файла
-     */
-
-    private void saveFile(final String filename)
-    {
-
-        new Thread()
-        {
-            public void run()
-            {
-                try {
-                    MainActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run()
-                        {
-                            DataOutputStream dos = null;
-
-                            try
-                            {
-                                File file = new File(Environment.getExternalStorageDirectory(), filename);
-                                dos = new DataOutputStream(new BufferedOutputStream(
-                                        new FileOutputStream(file)));
-
-                                dos.writeBoolean(false);
-
-                                if (Task != null)
-                                {
-                                    dos.writeBoolean(true);
-                                    dos.writeUTF(Task);
-                                }
-                                else dos.writeBoolean(false);
-
-                                dos.writeInt(pAdapter.pc.size());
-
-                                for (int i = 0; i < pAdapter.pc.size(); ++i)
-                                {
-                                    PostCode pst = pAdapter.pc.get(i);
-
-                                    dos.writeChar(pst.command);
-                                    dos.writeUTF(pst.getGoto());
-                                    dos.writeUTF(pst.comment);
-                                }
-
-                                dos.writeInt(rAdapter.getSelectedPosition());
-
-                                char[] ribbon = rAdapter.getRibbon();
-
-                                for (char c : ribbon) dos.writeChar(c);
-                            }
-                            catch (IOException e)
-                            {
-                                Toast.makeText(MainActivity.this, R.string.access_error, Toast.LENGTH_LONG).show();
-                            }
-                            finally
-                            {
-                                if (dos != null)
-                                    try
-                                    {
-                                        dos.close();
-                                        Toast.makeText(MainActivity.this, getString(R.string.save_file_succ) + ' ' +
-                                                Environment.getExternalStorageDirectory().toString() + '/' + filename, Toast.LENGTH_LONG).show();
-                                    }
-                                    catch (IOException logOrIgnore)
-                                    {
-                                        Toast.makeText(MainActivity.this, R.string.access_error, Toast.LENGTH_LONG).show();
-                                    }
-                            }
-                        }
-                    });
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-    }
-
-    /**
      * Метод создания новой программы МП
      */
 
@@ -892,18 +794,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
-                rAdapter.resetAdapter();
-                recyclerView.scrollToPosition(rAdapter.getSelectedPosition());
-
-                Task = null;
-                ChosenFile = null;
-
-                pAdapter.pc.clear();
-                pAdapter.pc.add(new PostCode());
-                pAdapter.pc.trimToSize();
-
-                pAdapter.resetAdapter();
-                pAdapter.notifyDataSetChanged();
+                resetState();
             }
         });
 
@@ -915,6 +806,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    protected void resetState()
+    {
+        rAdapter.resetAdapter();
+        recyclerView.scrollToPosition(rAdapter.getSelectedPosition());
+
+        Task = null;
+        ChosenFile = null;
+
+        pAdapter.resetAdapter();
+        pAdapter.notifyDataSetChanged();
     }
 
     @Override

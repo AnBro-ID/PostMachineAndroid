@@ -25,7 +25,7 @@ class TriplePostAdapter extends PostAdapter
 
     public TriplePostAdapter(Context context, PostAdapter postAdapter)
     {
-        this(context);
+        super(context);
 
         pc.clear();
         current_line = postAdapter.current_line;
@@ -267,5 +267,20 @@ class TriplePostAdapter extends PostAdapter
         holder.Comment.setTag(position);
 
         return rowView;
+    }
+
+    public void resetAdapter()
+    {
+        super.resetAdapter();
+
+        pc.clear();
+        pc.add(new PostCodeTriple());
+        pc.trimToSize();
+    }
+
+    @Override
+    public int getCount()
+    {
+        return pc.size();
     }
 }

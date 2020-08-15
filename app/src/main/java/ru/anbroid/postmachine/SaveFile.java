@@ -28,8 +28,9 @@ public class SaveFile extends AsyncTask<Void, Void, Boolean>
     protected void onPreExecute()
     {
         activity.get().lockScreenOrientation();
-        this.dialog.setMessage(activity.get().getResources().getString(R.string.saving_file));
-        this.dialog.show();
+        dialog.setMessage(activity.get().getResources().getString(R.string.saving_file));
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     @Override
@@ -60,7 +61,7 @@ public class SaveFile extends AsyncTask<Void, Void, Boolean>
             dos = new DataOutputStream(new BufferedOutputStream(
                     new FileOutputStream(file)));
 
-            dos.writeBoolean(false);
+            dos.writeBoolean(activity.get().isTriple);
 
             if (activity.get().Task != null)
             {

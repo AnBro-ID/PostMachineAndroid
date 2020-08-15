@@ -306,6 +306,10 @@ public class PostAdapter extends ArrayAdapter<PostCode>
         current_line = -1;
         exec_line = -1;
         isSelected = false;
+
+        pc.clear();
+        pc.add(new PostCode());
+        pc.trimToSize();
     }
 
     @Override
