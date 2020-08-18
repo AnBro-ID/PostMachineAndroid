@@ -58,9 +58,7 @@ public class SaveFile extends AsyncTask<Void, Void, Boolean>
                     Environment.getExternalStorageDirectory().toString() + '/' + fileName, Toast.LENGTH_LONG).show();
         }
         else
-        {
             Toast.makeText(activity.get(), R.string.access_error, Toast.LENGTH_LONG).show();
-        }
 
         activity.get().unlockScreenOrientation();
     }

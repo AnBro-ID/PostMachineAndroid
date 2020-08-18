@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -316,5 +317,25 @@ public class PostAdapter extends ArrayAdapter<PostCode>
     public int getCount()
     {
         return pc.size();
+    }
+
+    public void addObj(int where)
+    {
+        pc.add(where, new PostCode());
+    }
+
+    public void addObj()
+    {
+        pc.add(new PostCode());
+    }
+
+    public void addObj(char command, String go_to, String comment)
+    {
+        pc.add(new PostCode(command, go_to, comment));
+    }
+
+    public void addObj(Serializable obj)
+    {
+        pc.add((PostCode) obj);
     }
 }

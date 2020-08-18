@@ -1,6 +1,8 @@
 package ru.anbroid.postmachine;
 
+import android.content.SharedPreferences;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -12,9 +14,16 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 class OpenFile extends SaveFile
 {
+    boolean mode;
+    String taskDesc;
+    ArrayList<PostCode> arrayList;
+    char[] ribbon;
+    int position;
+
     public OpenFile(MainActivity myApp, String filename)
     {
         super(myApp, filename);
@@ -41,17 +50,32 @@ class OpenFile extends SaveFile
     protected void onPostExecute(Boolean success)
     {
         if (dialog.isShowing())
-        {
             dialog.dismiss();
-        }
 
         if (!success)
         {
             Toast.makeText(activity.get(), R.string.access_error, Toast.LENGTH_LONG).show();
+            activity.get().resetState();
         }
         else
         {
-            activity.get().resetState();
+            MainActivity.isTriple = mode;
+            activity.get().Task = taskDesc;
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(activity.get()).edit();
+            int mode_int = mode ? 1 : 0;
+
+            editor.putString("alphabet_list", Integer.toString(mode_int));
+            editor.commit();
+
+            activity.get().initUI();
+
+            activity.get().pAdapter.pc = arrayList;
+            activity.get().rAdapter.setRibbon(ribbon);
+            activity.get().rAdapter.setSelectedPosition(position);
+
+            activity.get().rAdapter.backupRibbon();
+            activity.get().pAdapter.notifyDataSetChanged();
+            activity.get().recyclerView.scrollToPosition(activity.get().rAdapter.getSelectedPosition());
         }
 
         activity.get().unlockScreenOrientation();
@@ -69,15 +93,15 @@ class OpenFile extends SaveFile
             in = new DataInputStream(new BufferedInputStream(
                     new FileInputStream(file)));
 
-            MainActivity.isTriple = in.readBoolean();
+            mode = in.readBoolean();
 
             Length = in.readBoolean() ? 1 : 0;
 
             if (Length == 1)
-                activity.get().Task = in.readUTF();
+                taskDesc = in.readUTF();
 
             Length = in.readInt();
-            activity.get().pAdapter.pc.clear();
+            arrayList = new ArrayList<>(Length);
 
             for (int i = 0; i < Length; ++i)
             {
@@ -85,18 +109,17 @@ class OpenFile extends SaveFile
                 String goTo = in.readUTF();
                 String comment = in.readUTF();
 
-                activity.get().pAdapter.pc.add(new PostCode(command, goTo, comment));
+                if (mode)
+                    arrayList.add(new PostCodeTriple(command, goTo, comment));
+                else
+                    arrayList.add(new PostCode(command, goTo, comment));
             }
 
-            Length = in.readInt();
-            activity.get().rAdapter.setSelectedPosition(Length);
-
-            char[] ribbon = new char[100];
+            position = in.readInt();
+            ribbon = new char[100];
 
             for (int i = 0; i < ribbon.length; ++i)
                 ribbon[i] = in.readChar();
-
-            activity.get().rAdapter.setRibbon(ribbon);
         }
         catch (IOException e)
         {
@@ -104,10 +127,6 @@ class OpenFile extends SaveFile
         }
         finally
         {
-            activity.get().rAdapter.backupRibbon();
-            activity.get().pAdapter.notifyDataSetChanged();
-            activity.get().recyclerView.scrollToPosition(activity.get().rAdapter.getSelectedPosition());
-
             if (in != null)
                 try
                 {

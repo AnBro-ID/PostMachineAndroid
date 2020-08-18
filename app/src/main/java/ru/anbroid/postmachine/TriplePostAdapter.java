@@ -10,6 +10,8 @@ import android.widget.NumberPicker;
 
 import androidx.appcompat.app.AlertDialog;
 
+import java.io.Serializable;
+
 class TriplePostAdapter extends PostAdapter
 {
     public TriplePostAdapter(Context context)
@@ -278,5 +280,25 @@ class TriplePostAdapter extends PostAdapter
     public int getCount()
     {
         return pc.size();
+    }
+
+    public void addObj(int where)
+    {
+        pc.add(where, new PostCodeTriple());
+    }
+
+    public void addObj()
+    {
+        pc.add(new PostCodeTriple());
+    }
+
+    public void addObj(char command, String go_to, String comment)
+    {
+        pc.add(new PostCodeTriple(command, go_to, comment));
+    }
+
+    public void addObj(Serializable obj)
+    {
+        pc.add((PostCodeTriple) obj);
     }
 }

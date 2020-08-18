@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected String Task;                  // условие задачи
     private String ChosenFile;              // открытый файл
 
-    private Handler handler;                // обработчик сообщений
+    protected Handler handler;              // обработчик сообщений
     private Thread thread;                  // поток выполнения МП
 
     private ImageButton playBtn;            // кнопка для начала выполнения программы МП
@@ -65,21 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initUI();
     }
 
-    private void initBinary()
-    {
-        pAdapter = new PostAdapter(this);
-        rAdapter = new RibbonAdapter(this);
-        handler = new BinaryHandler(this);
-    }
-
-    private void initTriple()
-    {
-        pAdapter = new TriplePostAdapter(this);
-        rAdapter = new RibbonAdapterTriple(this);
-        handler = new TripleHandler(this);
-    }
-
-    private void initUI()
+    protected void initUI()
     {
         isPlay = false;
         isPaused = false;
@@ -89,8 +75,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isTriple = Integer.parseInt(sp.getString("alphabet_list", "0")) > 0;
 
         if (isTriple)
-            initTriple();
-        else initBinary();
+        {
+            pAdapter = new TriplePostAdapter(this);
+            rAdapter = new RibbonAdapterTriple(this);
+            handler = new TripleHandler(this);
+        }
+        else
+        {
+            pAdapter = new PostAdapter(this);
+            rAdapter = new RibbonAdapter(this);
+            handler = new BinaryHandler(this);
+        }
 
         ListView lvMain = findViewById(R.id.lvMain);
         lvMain.setAdapter(pAdapter);
@@ -274,7 +269,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (pAdapter.isSelected)
                 {
-                    pAdapter.pc.add(pAdapter.current_line, new PostCode());
+                    pAdapter.addObj(pAdapter.current_line);
                     pAdapter.pc.trimToSize();
                     pAdapter.notifyDataSetChanged();
                 }
@@ -285,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (pAdapter.isSelected)
                 {
-                    pAdapter.pc.add(pAdapter.current_line + 1, new PostCode());
+                    pAdapter.addObj(pAdapter.current_line + 1);
                     pAdapter.pc.trimToSize();
                     pAdapter.notifyDataSetChanged();
                 }
@@ -770,7 +765,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         pAdapter.pc.clear();
 
         for (int i = 0; i < inState.getInt("size"); ++i)
-            pAdapter.pc.add((PostCode) inState.getSerializable(Integer.toString(i)));
+            pAdapter.addObj(inState.getSerializable(Integer.toString(i)));
     }
 
     @Override
