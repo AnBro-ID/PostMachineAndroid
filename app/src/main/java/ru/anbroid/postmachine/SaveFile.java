@@ -1,9 +1,12 @@
 package ru.anbroid.postmachine;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
@@ -14,22 +17,30 @@ import java.lang.ref.WeakReference;
 
 public class SaveFile extends AsyncTask<Void, Void, Boolean>
 {
-    private ProgressDialog dialog;
-    private WeakReference<MainActivity> activity;
-    private String fileName;
+    protected AlertDialog dialog;
+    protected WeakReference<MainActivity> activity;
+    protected String fileName;
 
     public SaveFile(MainActivity myApp, String filename)
     {
         activity = new WeakReference<>(myApp);
         fileName = filename;
-        dialog = new ProgressDialog(activity.get());
     }
 
     protected void onPreExecute()
     {
         activity.get().lockScreenOrientation();
-        dialog.setMessage(activity.get().getResources().getString(R.string.saving_file));
-        dialog.setCancelable(false);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity.get());
+
+        View view = activity.get().getLayoutInflater().inflate(R.layout.progress_indicator, null);
+        TextView textView = view.findViewById(R.id.progressTitle);
+
+        textView.setText(activity.get().getString(R.string.saving_file));
+        builder.setView(view);
+        builder.setCancelable(false);
+
+        dialog = builder.create();
         dialog.show();
     }
 
@@ -41,10 +52,13 @@ public class SaveFile extends AsyncTask<Void, Void, Boolean>
             dialog.dismiss();
         }
 
-        if (success) {
+        if (success)
+        {
             Toast.makeText(activity.get(), activity.get().getString(R.string.save_file_succ) + ' ' +
                     Environment.getExternalStorageDirectory().toString() + '/' + fileName, Toast.LENGTH_LONG).show();
-        } else {
+        }
+        else
+        {
             Toast.makeText(activity.get(), R.string.access_error, Toast.LENGTH_LONG).show();
         }
 
@@ -61,7 +75,7 @@ public class SaveFile extends AsyncTask<Void, Void, Boolean>
             dos = new DataOutputStream(new BufferedOutputStream(
                     new FileOutputStream(file)));
 
-            dos.writeBoolean(activity.get().isTriple);
+            dos.writeBoolean(MainActivity.isTriple);
 
             if (activity.get().Task != null)
             {
@@ -96,7 +110,7 @@ public class SaveFile extends AsyncTask<Void, Void, Boolean>
                     dos.close();
                 } catch (IOException logOrIgnore)
                 {
-                    return false;
+                    logOrIgnore.printStackTrace();
                 }
         }
         return true;

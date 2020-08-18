@@ -66,7 +66,7 @@ public class PostAdapter extends ArrayAdapter<PostCode>
 
         for (int i = 0; i < postAdapter.getCount(); ++i)
         {
-            pc.add(new PostCode(postAdapter.pc.get(i)));
+            pc.add(new PostCode((PostCodeTriple) postAdapter.pc.get(i)));
         }
     }
 

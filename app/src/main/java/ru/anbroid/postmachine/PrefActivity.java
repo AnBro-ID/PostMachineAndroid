@@ -59,7 +59,7 @@ public class PrefActivity extends AppCompatActivity
                 }
                 else if (key.equals("alphabet_list"))
                 {
-                    MainActivity.isTriple = Boolean.parseBoolean(sp.getString(key, "0"));
+                    MainActivity.isTriple = Integer.parseInt(sp.getString(key, "0")) > 0;
                 }
             }
         };

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center_vertical"
     android:gravity="center_vertical">
 
@@ -11,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:autoLink="email"
-        android:drawableStart="@mipmap/ic_launcher"
-        android:drawableLeft="@mipmap/ic_launcher"
+        app:drawableStartCompat="@mipmap/ic_launcher"
+        app:drawableLeftCompat="@mipmap/ic_launcher"
         android:gravity="center_vertical"
         android:paddingBottom="20dp"
         android:singleLine="false" />

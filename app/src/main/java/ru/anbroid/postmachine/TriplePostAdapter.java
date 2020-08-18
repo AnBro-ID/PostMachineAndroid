@@ -10,16 +10,12 @@ import android.widget.NumberPicker;
 
 import androidx.appcompat.app.AlertDialog;
 
-import java.util.ArrayList;
-
 class TriplePostAdapter extends PostAdapter
 {
-    public ArrayList<PostCodeTriple> pc;
-
     public TriplePostAdapter(Context context)
     {
         super(context);
-        pc = new ArrayList<PostCodeTriple>(1);
+        pc.clear();
         pc.add(new PostCodeTriple());
     }
 
@@ -81,11 +77,11 @@ class TriplePostAdapter extends PostAdapter
                         case R.id.Command:
                         {
                             final int pos = (int) v.getTag();
-                            final String[] commands = getContext().getResources().getStringArray(R.array.post_command);
+                            final String[] commands = getContext().getResources().getStringArray(R.array.triple_post_command);
                             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
                             builder.setTitle(R.string.command_text);
-                            builder.setItems(R.array.post_command, new DialogInterface.OnClickListener()
+                            builder.setItems(R.array.triple_post_command, new DialogInterface.OnClickListener()
                             {
                                 public void onClick(DialogInterface dialog, int id)
                                 {
@@ -151,7 +147,7 @@ class TriplePostAdapter extends PostAdapter
                                     @Override
                                     public void onClick(DialogInterface dialog, int which)
                                     {
-                                        pc.get(pos).setConcatGotoByInt(numpick1.getValue(), numpick2.getValue(), numpick3.getValue());
+                                        ((PostCodeTriple)pc.get(pos)).setConcatGotoByInt(numpick1.getValue(), numpick2.getValue(), numpick3.getValue());
                                         notifyDataSetChanged();
                                     }
                                 });

@@ -13,17 +13,14 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FilenameFilter;
-import java.io.IOException;
 
 import android.view.View;
 import android.widget.Button;
@@ -68,6 +65,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initUI();
     }
 
+    private void initBinary()
+    {
+        pAdapter = new PostAdapter(this);
+        rAdapter = new RibbonAdapter(this);
+        handler = new BinaryHandler(this);
+    }
+
+    private void initTriple()
+    {
+        pAdapter = new TriplePostAdapter(this);
+        rAdapter = new RibbonAdapterTriple(this);
+        handler = new TripleHandler(this);
+    }
+
     private void initUI()
     {
         isPlay = false;
@@ -75,13 +86,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         isPlayBySteps = false;
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         speed = Integer.parseInt(sp.getString("speed_list", "500"));
-        isTriple = Boolean.parseBoolean(sp.getString("alphabet_list", "0"));
+        isTriple = Integer.parseInt(sp.getString("alphabet_list", "0")) > 0;
 
-        pAdapter = new PostAdapter(this);
+        if (isTriple)
+            initTriple();
+        else initBinary();
+
         ListView lvMain = findViewById(R.id.lvMain);
         lvMain.setAdapter(pAdapter);
 
-        rAdapter = new RibbonAdapter(this);
         RibbonLayoutManager ribbonLayoutManager = new RibbonLayoutManager(this, this.getResources().getInteger(R.integer.ribbon_items));
 
         recyclerView = findViewById(R.id.Ribbon);
@@ -92,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rAdapter.setClickListener(this);
 
         RibbonItemDecoration itemDecorator = new RibbonItemDecoration(this, ribbonLayoutManager.getOrientation());
-        itemDecorator.setDrawable(getResources().getDrawable(R.drawable.divider));
+        itemDecorator.setDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.divider, null));
         recyclerView.addItemDecoration(itemDecorator);
 
         int screenWidth = ScreenUtils.getScreenWidth(this);
@@ -124,8 +137,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         playBtn = findViewById(R.id.play_btn);
         playBtn.setOnClickListener(this);
-
-        handler = new BinaryHandler(this);
     }
 
     @Override
@@ -391,7 +402,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * Метод, инициирующий выполнение программы МП
      */
 
-    synchronized private void start()
+    private void start()
     {
         playBtn.setImageResource(R.drawable.pause);
 
@@ -463,7 +474,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             playBtn.setImageResource(R.drawable.play);
 
             thread.interrupt();
-
             thread = null;
 
             handler.removeCallbacksAndMessages(null);
@@ -602,7 +612,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onClick(DialogInterface dialog, int which)
                 {
                     ChosenFile = mFileList[which];
-                    openFile();
+                    new OpenFile(MainActivity.this, ChosenFile).execute();
                 }
             });
 
@@ -669,115 +679,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     * Метод открытия файла
-     */
-
-    private void openFile()
-    {
-        new Thread()
-        {
-            public void run()
-            {
-                try {
-                    MainActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run()
-                        {
-                            DataInputStream in = null;
-
-                            int Length;
-
-                            try
-                            {
-                                File file = new File(Environment.getExternalStorageDirectory(), ChosenFile);
-                                in = new DataInputStream(new BufferedInputStream(
-                                        new FileInputStream(file)));
-
-                                in.readBoolean();
-
-                                Length = in.readBoolean() ? 1 : 0;
-
-                                if (Length == 1)
-                                    Task = in.readUTF();
-
-                                Length = in.readInt();
-                                pAdapter.pc.clear();
-
-                                for (int i = 0; i < Length; ++i)
-                                {
-                                    char command = in.readChar();
-                                    String goTo = in.readUTF();
-                                    String comment = in.readUTF();
-
-                                    pAdapter.pc.add(new PostCode(command, goTo, comment));
-                                }
-
-                                Length = in.readInt();
-                                rAdapter.setSelectedPosition(Length);
-
-                                char[] ribbon = new char[100];
-
-                                for (int i = 0; i < ribbon.length; ++i)
-                                    ribbon[i] = in.readChar();
-
-                                rAdapter.setRibbon(ribbon);
-                            }
-                            catch (IOException e)
-                            {
-                                Toast.makeText(MainActivity.this, R.string.access_error, Toast.LENGTH_LONG).show();
-                                rAdapter.resetAdapter();
-                                recyclerView.scrollToPosition(rAdapter.getSelectedPosition());
-
-                                Task = null;
-                                ChosenFile = null;
-
-                                pAdapter.pc.clear();
-                                pAdapter.pc.add(new PostCode());
-                                pAdapter.pc.trimToSize();
-
-                                pAdapter.resetAdapter();
-                                pAdapter.notifyDataSetChanged();
-                            }
-                            finally
-                            {
-                                rAdapter.backupRibbon();
-                                pAdapter.notifyDataSetChanged();
-                                recyclerView.scrollToPosition(rAdapter.getSelectedPosition());
-
-                                if (in != null)
-                                    try
-                                    {
-                                        in.close();
-                                    }
-                                    catch (IOException logOrIgnore)
-                                    {
-                                        Toast.makeText(MainActivity.this, R.string.access_error, Toast.LENGTH_LONG).show();
-                                        rAdapter.resetAdapter();
-                                        recyclerView.scrollToPosition(rAdapter.getSelectedPosition());
-
-                                        Task = null;
-                                        ChosenFile = null;
-
-                                        pAdapter.pc.clear();
-                                        pAdapter.pc.add(new PostCode());
-                                        pAdapter.pc.trimToSize();
-
-                                        pAdapter.resetAdapter();
-                                        pAdapter.notifyDataSetChanged();
-                                    }
-                            }
-                        }
-                    });
-                }
-                catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-    }
-
-    /**
      * Метод создания новой программы МП
      */
 
@@ -825,8 +726,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         if (rAdapter.getSelectedPosition() == position)
         {
-            if (rAdapter.getItem(position) == '0') rAdapter.setItem(position, '1');
-            else rAdapter.setItem(position, '0');
+            char symbol = rAdapter.getItem(position);
+
+            switch (symbol)
+            {
+                case '0': rAdapter.setItem(position, '1'); break;
+                case '1':
+                    if (isTriple) rAdapter.setItem(position, ' ');
+                    else rAdapter.setItem(position, '0');
+                    break;
+                case ' ': default: rAdapter.setItem(position, '0');
+            }
         }
         else recyclerView.smoothScrollToPosition(position);
     }
@@ -887,10 +797,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             outState.putSerializable(Integer.toString(i), pAdapter.pc.get(i));
 
         super.onSaveInstanceState(outState);
-    }
-
-    public void onMultiWindowModeChanged(boolean isInMultiWindowMode, Configuration newConfig) {
-        super.onMultiWindowModeChanged(isInMultiWindowMode, newConfig);
     }
 
     protected void lockScreenOrientation()
