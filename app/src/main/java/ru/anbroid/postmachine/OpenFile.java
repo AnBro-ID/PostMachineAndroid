@@ -67,7 +67,8 @@ class OpenFile extends SaveFile
             editor.putString("alphabet_list", Integer.toString(mode_int));
             editor.commit();
 
-            activity.get().initUI();
+            if (mode) activity.get().setTripleUI();
+            else activity.get().setBinaryUI();
 
             activity.get().pAdapter.pc = arrayList;
             activity.get().rAdapter.setRibbon(ribbon);

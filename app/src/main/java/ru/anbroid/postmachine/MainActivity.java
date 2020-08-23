@@ -65,6 +65,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initUI();
     }
 
+    protected void setTripleUI()
+    {
+        pAdapter = new TriplePostAdapter(this);
+        rAdapter = new RibbonAdapterTriple(this);
+        handler = new TripleHandler(this);
+
+        ListView lvMain = findViewById(R.id.lvMain);
+        lvMain.setAdapter(pAdapter);
+
+        recyclerView.setAdapter(rAdapter);
+        RibbonLayoutManager rlm = (RibbonLayoutManager) recyclerView.getLayoutManager();
+        rlm.setOnItemSelectedListener(rAdapter);
+        rAdapter.setClickListener(this);
+    }
+
+    protected void setBinaryUI()
+    {
+        pAdapter = new PostAdapter(this);
+        rAdapter = new RibbonAdapter(this);
+        handler = new BinaryHandler(this);
+
+        ListView lvMain = findViewById(R.id.lvMain);
+        lvMain.setAdapter(pAdapter);
+
+        recyclerView.setAdapter(rAdapter);
+        RibbonLayoutManager rlm = (RibbonLayoutManager) recyclerView.getLayoutManager();
+        rlm.setOnItemSelectedListener(rAdapter);
+        rAdapter.setClickListener(this);
+    }
+
     protected void initUI()
     {
         isPlay = false;
