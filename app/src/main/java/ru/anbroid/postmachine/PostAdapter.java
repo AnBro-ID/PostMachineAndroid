@@ -56,21 +56,6 @@ public class PostAdapter extends ArrayAdapter<PostCode>
         isSelected = false;
     }
 
-    public PostAdapter(Context context, TriplePostAdapter postAdapter)
-    {
-        this(context);
-
-        pc.clear();
-        current_line = postAdapter.current_line;
-        exec_line = postAdapter.exec_line;
-        isSelected = postAdapter.isSelected;
-
-        for (int i = 0; i < postAdapter.getCount(); ++i)
-        {
-            pc.add(new PostCode((PostCodeTriple) postAdapter.pc.get(i)));
-        }
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {

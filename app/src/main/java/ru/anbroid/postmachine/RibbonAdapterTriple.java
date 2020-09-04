@@ -9,15 +9,6 @@ class RibbonAdapterTriple extends RibbonAdapter
         super(context);
     }
 
-    public RibbonAdapterTriple(Context context, RibbonAdapter rb)
-    {
-        super(context);
-        mRibbon = rb.mRibbon;
-        mRibbonBackup = rb.mRibbonBackup;
-        mSelected = rb.mSelected;
-        mSaved = rb.mSaved;
-    }
-
     public int searchSign(int direction)
     {
         int searchPos = -1;

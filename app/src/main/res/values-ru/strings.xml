@@ -35,9 +35,9 @@
     <string name="access_error">Ошибка ввода/вывода</string>
     <string name="opening_file">Подождите. Файл открывается…</string>
     <string name="saving_file">Подождите. Файл сохраняется…</string>
+    <string name="converting">Подождите. Идёт конвертация…</string>
     <string name="steps_menu">По шагам со строки…</string>
     <string name="steps">Выполнить со строки №</string>
-
 
     <string-array name="pref_speed">
         <item>Очень быстро</item>

@@ -25,25 +25,6 @@ public class RibbonAdapter extends RecyclerView.Adapter<RibbonAdapter.ViewHolder
         for (int i = 0; i < mRibbon.length; ++i) mRibbon[i] = '0';
     }
 
-    public RibbonAdapter(RibbonAdapterTriple rb)
-    {
-        mInflater = rb.mInflater;
-        mRibbon = rb.mRibbon;
-        mRibbonBackup = rb.mRibbonBackup;
-        mSelected = rb.mSelected;
-        mSaved = rb.mSaved;
-        mClickListener = rb.mClickListener;
-
-        for (int i = 0; i < mRibbon.length; ++i)
-        {
-            if (mRibbon[i] == ' ')
-                mRibbon[i] = '0';
-
-            if (mRibbonBackup[i] == ' ')
-                mRibbonBackup[i] = '0';
-        }
-    }
-
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view = mInflater.inflate(R.layout.ribbon_item, parent, false);

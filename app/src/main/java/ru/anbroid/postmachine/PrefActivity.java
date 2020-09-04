@@ -54,13 +54,7 @@ public class PrefActivity extends AppCompatActivity
             public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
             {
                 if (key.equals("speed_list"))
-                {
                     MainActivity.speed = Integer.parseInt(sharedPreferences.getString(key, "500"));
-                }
-                else if (key.equals("alphabet_list"))
-                {
-                    MainActivity.isTriple = Integer.parseInt(sp.getString(key, "0")) > 0;
-                }
             }
         };
 

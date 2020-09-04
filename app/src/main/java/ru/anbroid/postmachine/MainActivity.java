@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -21,6 +22,7 @@ import android.view.MenuItem;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.util.ArrayList;
 
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     protected RecyclerView recyclerView;    // лента МП
     protected RibbonAdapter rAdapter;
+    private AsyncTask currentTask;
 
     private boolean isPlay;                 // флаг состояния МП - работает
     private boolean isPaused;               // флаг состояния МП - приостановлена
@@ -414,6 +417,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onResume()
     {
         super.onResume();
+
+        boolean newValue = Integer.parseInt(PreferenceManager.getDefaultSharedPreferences(this).getString("alphabet_list", "0")) > 0;
+
+        if (newValue && !MainActivity.isTriple)
+            currentTask = new ConvertData(this, true).execute();
+        else if (MainActivity.isTriple && !newValue)
+            currentTask = new ConvertData(this, false).execute();
+
+        MainActivity.isTriple = newValue;
     }
 
     @Override
@@ -637,7 +649,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 public void onClick(DialogInterface dialog, int which)
                 {
                     ChosenFile = mFileList[which];
-                    new OpenFile(MainActivity.this, ChosenFile).execute();
+                    currentTask = new OpenFile(MainActivity.this, ChosenFile).execute();
                 }
             });
 
@@ -690,7 +702,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             if (!filename.isEmpty())
                             {
                                 ChosenFile = filename + ".pme";
-                                new SaveFile(MainActivity.this, ChosenFile).execute();
+                                currentTask = new SaveFile(MainActivity.this, ChosenFile).execute();
                                 dialog.dismiss();
                             }
                         }
@@ -700,7 +712,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             alert.show();
         }
-        else new SaveFile(MainActivity.this, ChosenFile).execute();
+        else currentTask = new SaveFile(MainActivity.this, ChosenFile).execute();
     }
 
     /**

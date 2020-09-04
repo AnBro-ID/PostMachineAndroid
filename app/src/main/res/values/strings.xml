@@ -35,6 +35,7 @@
     <string name="access_error">I/O Error</string>
     <string name="opening_file">Opening file…</string>
     <string name="saving_file">Saving file…</string>
+    <string name="converting">Converting…</string>
     <string name="steps_menu">By steps from row №…</string>
     <string name="steps">Execution from row №</string>
 

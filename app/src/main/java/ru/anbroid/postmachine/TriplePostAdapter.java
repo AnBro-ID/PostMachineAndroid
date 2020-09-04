@@ -21,21 +21,6 @@ class TriplePostAdapter extends PostAdapter
         pc.add(new PostCodeTriple());
     }
 
-    public TriplePostAdapter(Context context, PostAdapter postAdapter)
-    {
-        super(context);
-
-        pc.clear();
-        current_line = postAdapter.current_line;
-        exec_line = postAdapter.exec_line;
-        isSelected = postAdapter.isSelected;
-
-        for (int i = 0; i < postAdapter.getCount(); ++i)
-        {
-            pc.add(new PostCodeTriple(postAdapter.pc.get(i)));
-        }
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
