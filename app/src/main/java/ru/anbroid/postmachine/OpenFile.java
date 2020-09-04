@@ -2,7 +2,7 @@ package ru.anbroid.postmachine;
 
 import android.content.SharedPreferences;
 import android.os.Environment;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;

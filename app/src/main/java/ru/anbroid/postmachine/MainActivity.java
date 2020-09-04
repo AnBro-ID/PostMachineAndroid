@@ -11,7 +11,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
@@ -22,7 +22,6 @@ import android.view.MenuItem;
 
 import java.io.File;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
 
 import android.view.View;
 import android.widget.Button;

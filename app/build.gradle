@@ -24,7 +24,7 @@ android {
             debuggable true
         }
     }
-    buildToolsVersion '29.0.2'
+    buildToolsVersion '30.0.2'
     productFlavors {
     }
 
@@ -46,5 +46,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.preference:preference:1.1.1'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 }

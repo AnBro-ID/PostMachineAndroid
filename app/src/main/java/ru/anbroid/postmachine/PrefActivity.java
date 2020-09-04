@@ -2,11 +2,11 @@ package ru.anbroid.postmachine;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceFragmentCompat;
 
-import android.preference.PreferenceManager;
+import androidx.preference.PreferenceManager;
 import android.view.View;
 
 /**
@@ -23,13 +23,11 @@ public class PrefActivity extends AppCompatActivity
      * Компонент для вывода настроек
      */
 
-    public static class SettingsFragment extends PreferenceFragment
+    public static class SettingsFragment extends PreferenceFragmentCompat
     {
-        @Override
-        public void onCreate(Bundle savedInstanceState)
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey)
         {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_general);
+            setPreferencesFromResource(R.xml.pref_general, rootKey);
         }
     }
 
@@ -59,7 +57,7 @@ public class PrefActivity extends AppCompatActivity
         };
 
         sp.registerOnSharedPreferenceChangeListener(settingListener);
-        getFragmentManager().beginTransaction().replace(R.id.pref_layout, new SettingsFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.pref_layout, new SettingsFragment()).commit();
     }
 
     protected void onResume()
