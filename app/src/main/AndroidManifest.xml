@@ -10,7 +10,8 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         android:resizeableActivity="false"
-        android:supportsPictureInPicture="false">
+        android:supportsPictureInPicture="false"
+        android:requestLegacyExternalStorage="true" >
 
         <activity android:resizeableActivity="false"
             android:supportsPictureInPicture="false" android:name="ru.anbroid.postmachine.MainActivity">

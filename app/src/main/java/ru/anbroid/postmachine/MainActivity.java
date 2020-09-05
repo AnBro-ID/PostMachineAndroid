@@ -850,6 +850,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     protected void unlockScreenOrientation()
     {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
     }
 }
