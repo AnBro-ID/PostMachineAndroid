@@ -1,7 +1,6 @@
 package ru.anbroid.postmachine;
 
 import android.content.SharedPreferences;
-import android.os.Environment;
 import androidx.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
@@ -90,7 +89,7 @@ class OpenFile extends SaveFile
 
         try
         {
-            File file = new File(Environment.getExternalStorageDirectory(), fileName);
+            File file = new File(activity.get().getExternalFilesDir(null).toString(), fileName);
             in = new DataInputStream(new BufferedInputStream(
                     new FileInputStream(file)));
 

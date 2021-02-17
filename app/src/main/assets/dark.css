@@ -1,0 +1,7 @@
+h1 {font-size:1.2em; font-weight:bold; margin-bottom:1em; text-align:center;}
+h2 {font-size:1.1em; font-weight:bold; margin-bottom:1em; background: -webkit-linear-gradient(180deg, #000000, #383838);}
+p {font-weight:normal;}
+ul {list-style-type:none;}
+.command {font-weight:bold; color:lightblue;}
+.num {font-weight:bold;}
+body {background-color:black; color: white;}

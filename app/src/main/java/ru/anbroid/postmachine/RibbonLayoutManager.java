@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 public class RibbonLayoutManager extends LinearLayoutManager
 {
     private int itemsPerPage;
+    private boolean isScrollEnabled;
     private LinearSnapHelper linSnapHelp;
     private onItemSelectedListener itemSelectedListener;
 
@@ -18,6 +19,7 @@ public class RibbonLayoutManager extends LinearLayoutManager
     {
         super(context, RecyclerView.HORIZONTAL, false);
         itemsPerPage = itemsNum;
+        isScrollEnabled = true;
     }
 
     @Override
@@ -95,5 +97,16 @@ public class RibbonLayoutManager extends LinearLayoutManager
     public int getItemsPerPage()
     {
         return itemsPerPage;
+    }
+
+    public void setScrollEnabled(boolean flag)
+    {
+        isScrollEnabled = flag;
+    }
+
+    @Override
+    public boolean canScrollHorizontally()
+    {
+        return isScrollEnabled && super.canScrollHorizontally();
     }
 }

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="text_color">#FFFFFF</color>
+	<color name="selected">#38B1DD</color>
+	<color name="exec">#ff67ff75</color>
+	<color name="normal">#303030</color>
+	<color name="ribbon_line">#ffffff</color>
+</resources>

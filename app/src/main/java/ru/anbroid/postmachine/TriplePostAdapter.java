@@ -240,6 +240,19 @@ class TriplePostAdapter extends PostAdapter
 
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
+        if (isUnlocked)
+        {
+            holder.Command.setEnabled(true);
+            holder.Goto.setEnabled(true);
+            holder.Comment.setEnabled(true);
+        }
+        else
+        {
+            holder.Command.setEnabled(false);
+            holder.Goto.setEnabled(false);
+            holder.Comment.setEnabled(false);
+        }
+
         holder.Count.setText(String.valueOf(position + 1));
         holder.Count.setTag(position);
         holder.Command.setText(Character.toString(pc.get(position).command));

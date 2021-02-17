@@ -26,6 +26,7 @@ public class PostAdapter extends ArrayAdapter<PostCode>
     public int current_line;                // номер выбранной строки
     public int exec_line;                   // номер выполняемой строки
     public boolean isSelected;              // флаг состояния строки
+    protected boolean isUnlocked;
 
     /**
      * Класс, реализующий шаблон проектирования Singleton
@@ -54,6 +55,7 @@ public class PostAdapter extends ArrayAdapter<PostCode>
         current_line = -1;
         exec_line = -1;
         isSelected = false;
+        isUnlocked = true;
     }
 
     @Override
@@ -271,6 +273,19 @@ public class PostAdapter extends ArrayAdapter<PostCode>
 
         ViewHolder holder = (ViewHolder) rowView.getTag();
 
+        if (isUnlocked)
+        {
+            holder.Command.setEnabled(true);
+            holder.Goto.setEnabled(true);
+            holder.Comment.setEnabled(true);
+        }
+        else
+        {
+            holder.Command.setEnabled(false);
+            holder.Goto.setEnabled(false);
+            holder.Comment.setEnabled(false);
+        }
+
         holder.Count.setText(String.valueOf(position + 1));
         holder.Count.setTag(position);
         holder.Command.setText(Character.toString(pc.get(position).command));
@@ -322,5 +337,15 @@ public class PostAdapter extends ArrayAdapter<PostCode>
     public void addObj(Serializable obj)
     {
         pc.add((PostCode) obj);
+    }
+
+    public void lock()
+    {
+        isUnlocked = false;
+    }
+
+    public void unlock()
+    {
+        isUnlocked = true;
     }
 }
