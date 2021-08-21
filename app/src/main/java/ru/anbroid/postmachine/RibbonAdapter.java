@@ -60,7 +60,7 @@ public class RibbonAdapter extends RecyclerView.Adapter<RibbonAdapter.ViewHolder
         @Override
         public void onClick(View view)
         {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            if (mClickListener != null) mClickListener.onItemClick(view, getAbsoluteAdapterPosition());
         }
     }
 
