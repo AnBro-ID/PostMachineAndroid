@@ -42,7 +42,9 @@ public class RibbonLayoutManager extends LinearLayoutManager
         if (state == RecyclerView.SCROLL_STATE_IDLE)
         {
             View centerView = linSnapHelp.findSnapView(this);
-            itemSelectedListener.onItemSelected(getPosition(centerView));
+
+            if (centerView != null)
+                itemSelectedListener.onItemSelected(getPosition(centerView));
         }
     }
 
