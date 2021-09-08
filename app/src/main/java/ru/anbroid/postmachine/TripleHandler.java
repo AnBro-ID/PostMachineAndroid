@@ -19,7 +19,7 @@ class TripleHandler extends BinaryHandler
             {
                 case '>':
 
-                    if (myApp.rAdapter.getSelectedPosition() == myApp.rAdapter.getRibbon().length - 1)
+                    if (myApp.rAdapter.getSelectedPosition() >= myApp.rAdapter.getRibbon().length - 1)
                     {
                         myApp.stop();
                         myApp.showError();
@@ -39,7 +39,7 @@ class TripleHandler extends BinaryHandler
 
                 case '<':
 
-                    if (myApp.rAdapter.getSelectedPosition() == 0)
+                    if (myApp.rAdapter.getSelectedPosition() <= 0)
                     {
                         myApp.stop();
                         myApp.showError();

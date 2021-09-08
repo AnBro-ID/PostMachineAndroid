@@ -8,7 +8,7 @@ android {
         applicationId "ru.anbroid.postmachine"
         minSdkVersion 14
         targetSdkVersion 30
-        versionCode 8
+        versionCode 9
         versionName "1.0.3"
     }
     buildTypes {
