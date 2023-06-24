@@ -29,9 +29,12 @@ android {
     productFlavors {
     }
     packagingOptions {
-        resources {
-            excludes += ['META-INF/*.version']
-        }
+        exclude 'META-INF/*.version'
+        exclude 'META-INF/services'
+        exclude 'META-INF/com'
+        exclude 'kotlin'
+        exclude 'DebugProbesKt.bin'
+        exclude 'assets/dexopt'
     }
 
     lint {
