@@ -2,11 +2,6 @@ package ru.anbroid.postmachine;
 
 import java.io.Serializable;
 
-/**
- * @author AnBro-ID, 2018, 2020
- * Класс, описывающий строку программы для машины Поста
- */
-
 public class PostCode implements Serializable
 {
     public char command;        // команда МП

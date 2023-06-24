@@ -4,6 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PostMachine.iml" filepath="$PROJECT_DIR$/PostMachine.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/PostMachine.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/PostMachine.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/PostMachine.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/PostMachine.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/PostMachine.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/PostMachine.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/PostMachine.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/PostMachine.app.unitTest.iml" />
     </modules>
   </component>
 </project>

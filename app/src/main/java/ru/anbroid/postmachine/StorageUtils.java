@@ -13,7 +13,7 @@ public class StorageUtils
     {
         boolean result = true;
 
-        if (ContextCompat.checkSelfPermission(activityCompat,
+        if (android.os.Build.VERSION.SDK_INT < 33 && ContextCompat.checkSelfPermission(activityCompat,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED)
         {
