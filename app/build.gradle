@@ -1,9 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-    }
-    compileSdkVersion 33
+    compileSdk 33
     defaultConfig {
         applicationId "ru.anbroid.postmachine"
         minSdkVersion 14
@@ -16,7 +14,6 @@ android {
             shrinkResources true
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
         }
         debug {
             shrinkResources true
@@ -25,16 +22,13 @@ android {
             debuggable true
         }
     }
-    buildToolsVersion '33.0.0'
+    buildToolsVersion = '33.0.1'
     productFlavors {
     }
     packagingOptions {
-        exclude 'META-INF/*.version'
-        exclude 'META-INF/services'
-        exclude 'META-INF/com'
-        exclude 'kotlin'
-        exclude 'DebugProbesKt.bin'
-        exclude 'assets/dexopt'
+        resources {
+            excludes += ['META-INF/*.version', 'META-INF/services', 'META-INF/com', 'kotlin', 'DebugProbesKt.bin', 'assets/dexopt']
+        }
     }
 
     lint {
@@ -53,6 +47,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.preference:preference:1.2.0'
-    implementation 'androidx.recyclerview:recyclerview:1.3.0'
+    implementation 'androidx.preference:preference:1.2.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.1'
 }
