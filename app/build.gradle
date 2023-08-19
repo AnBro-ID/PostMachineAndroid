@@ -9,6 +9,9 @@ android {
         versionCode 10
         versionName "1.0.3"
     }
+    androidResources {
+        generateLocaleConfig true
+    }
     buildTypes {
         release {
             shrinkResources true
